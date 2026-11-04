@@ -36,11 +36,11 @@ export function AppNav() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: 2,
+          gap: { xs: 1, sm: 2 },
           minHeight: 48,
         }}
       >
-        <Box component="nav" aria-label="Application" sx={{ display: 'flex', gap: { xs: 1.5, sm: 3 }, alignSelf: 'stretch' }}>
+        <Box component="nav" aria-label="Application" sx={{ display: 'flex', gap: { xs: 1, sm: 3 }, alignSelf: 'stretch', minWidth: 0 }}>
           {AREAS.map((area) => {
             const current = area.matches.test(pathname);
             return (

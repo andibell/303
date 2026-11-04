@@ -108,7 +108,7 @@ export function ReviewItemSection({ request, item, issues, open, onToggle }: Rev
                       const note = sourceNoteFor(field.value);
                       return (
                         <Box key={field.id} sx={{ minWidth: 0 }}>
-                          <Typography component="dt" variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+                          <Typography component="dt" variant="caption" color="text.secondary" sx={{ display: 'block', position: 'relative' }}>
                             {field.fromReference && <ReferenceIndicator />}
                             {field.label}
                           </Typography>

@@ -235,7 +235,7 @@ function ReviewContent({ request, onSubmitted }: { request: BomRequest; onSubmit
           {ready ? (
             <Typography variant="body2" sx={{ mt: 1 }}>
               Nothing blocks submission.
-              {warningCount > 0 && ` ${plural(warningCount, 'warning')} won’t block it; you can review them in Request Setup.`}
+              {warningCount > 0 && ` ${plural(warningCount, 'warning')} won’t block submission.`}
             </Typography>
           ) : items.length === 0 ? (
             <Typography variant="body2" sx={{ mt: 1 }}>
