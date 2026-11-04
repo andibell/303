@@ -61,8 +61,14 @@ const sortValue = (request: BomRequest, key: SortKey, lifecycle: LifecycleId): s
 const openPath = (request: BomRequest, lifecycle: LifecycleId): string =>
   lifecycle === 'drafts' ? draftContinuePath(request) : `/requests/${request.id}`;
 
-const nameLink = (request: BomRequest, lifecycle: LifecycleId) => (
-  <Link component={RouterLink} to={openPath(request, lifecycle)} underline="hover" sx={{ fontWeight: 600, color: 'text.primary' }}>
+const nameLink = (request: BomRequest, lifecycle: LifecycleId, stretch = false) => (
+  <Link
+    component={RouterLink}
+    to={openPath(request, lifecycle)}
+    underline="hover"
+    // In the narrow list the link's hit area covers its whole row, so the row is a comfortable touch target.
+    sx={{ fontWeight: 600, color: 'text.primary', ...(stretch && { '&::after': { content: '""', position: 'absolute', inset: 0 } }) }}
+  >
     {request.name}
   </Link>
 );
@@ -173,10 +179,10 @@ function NarrowList({ requests, lifecycle }: { requests: BomRequest[]; lifecycle
       {requests.map((request, index) => {
         const chip = lifecycle === 'drafts' ? draftState(request) : requestStatusChip(request);
         return (
-          <ListItem key={request.id} divider={index < requests.length - 1} sx={{ display: 'block' }}>
+          <ListItem key={request.id} divider={index < requests.length - 1} sx={{ display: 'block', position: 'relative' }}>
             <Stack direction="row" spacing={1} sx={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <Box sx={{ minWidth: 0 }}>
-                {nameLink(request, lifecycle)}
+                {nameLink(request, lifecycle, true)}
                 <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
                   {request.id} · {businessNeedText(request)}
                 </Typography>

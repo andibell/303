@@ -25,6 +25,7 @@ import { previewSubmission } from '../../domain/requests';
 import type { BomRequest } from '../../domain/types';
 import { useAppStore } from '../../store/appStore';
 import { contextForRole } from '../../store/context';
+import { standaloneLinkSx } from '../../theme/tokens';
 import { orderedItems, plural } from '../setup/setupSummaries';
 import { businessNeedText, hasCompletedIntake, itemNamesSummary, requestStatusChip, scenarioText, stageLinks } from '../work/summaries';
 import { ReviewItemSection } from './ReviewItemSection';
@@ -44,7 +45,7 @@ export function ReviewPage() {
         <PageHeading title="Review & Submit" />
         <ErrorState title="We couldn’t find that request" description="It may have been deleted, or the address is wrong." />
         <Box sx={{ mt: 2 }}>
-          <Link component={RouterLink} to="/work/drafts">
+          <Link component={RouterLink} to="/work/drafts" sx={standaloneLinkSx}>
             Back to BOM Work
           </Link>
         </Box>
@@ -131,7 +132,7 @@ function ReviewContent({ request, onSubmitted }: { request: BomRequest; onSubmit
           </Stack>
         }
         actions={
-          <Link component={RouterLink} to="/work/drafts">
+          <Link component={RouterLink} to="/work/drafts" sx={standaloneLinkSx}>
             Back to BOM Work
           </Link>
         }
@@ -147,7 +148,7 @@ function ReviewContent({ request, onSubmitted }: { request: BomRequest; onSubmit
             <Typography id="review-summary-heading" variant="h3" component="h2">
               Request summary
             </Typography>
-            <Link component={RouterLink} to={`/requests/${id}/intake`}>
+            <Link component={RouterLink} to={`/requests/${id}/intake`} sx={standaloneLinkSx}>
               Edit in Intake
             </Link>
           </Stack>
@@ -262,7 +263,7 @@ function ReviewContent({ request, onSubmitted }: { request: BomRequest; onSubmit
                         </Typography>
                       ))}
                     </Box>
-                    <Link component={RouterLink} to={group.to} variant="body2" sx={{ display: 'inline-block', mt: 0.5 }}>
+                    <Link component={RouterLink} to={group.to} variant="body2" sx={standaloneLinkSx}>
                       {group.linkLabel}
                     </Link>
                   </Box>

@@ -13,6 +13,7 @@ import type { BomRequest, FertCreateItem, ValidationIssue } from '../../../domai
 import { sectionCompleteness } from '../../../domain/validation/engine';
 import { useAppStore } from '../../../store/appStore';
 import { COMPLETENESS_CHIPS } from '../../work/summaries';
+import { standaloneLinkSx } from '../../../theme/tokens';
 import { ExecutionOutcome } from '../../../components/provenance/ExecutionOutcome';
 import { SourceNote } from '../../../components/provenance/SourceNote';
 import { REFERENCE_DATA_PHRASE } from '../../../components/provenance/provenance';
@@ -77,12 +78,14 @@ export function FertCreateEditor({ request, item }: FertCreateEditorProps) {
         <Typography variant="body2" sx={{ mt: 0.25, whiteSpace: 'pre-wrap' }}>
           {textOf(request.context.businessJustification) || 'Not entered yet.'}
         </Typography>
-        <Typography variant="caption" color="text.secondary">
-          Shared by every Request Item in this request ·{' '}
-          <Link component={RouterLink} to={`/requests/${request.id}/intake`}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', columnGap: 0.75 }}>
+          <Typography variant="caption" color="text.secondary">
+            Shared by every Request Item in this request <span aria-hidden>·</span>
+          </Typography>
+          <Link component={RouterLink} to={`/requests/${request.id}/intake`} variant="caption" sx={standaloneLinkSx}>
             Edit in Intake
           </Link>
-        </Typography>
+        </Box>
       </Box>
 
       {FINISHED_GOODS_CREATE_SECTIONS.map(({ section, title, description, conceptTemplate, executionOutcome }) => {

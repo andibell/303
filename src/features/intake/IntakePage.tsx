@@ -27,6 +27,7 @@ import { textOf } from '../../domain/items/accessors';
 import { DEFAULT_REQUEST_NAME, fv } from '../../domain/requests';
 import type { BomRequest, BusinessNeedId, MaterialScenarioId } from '../../domain/types';
 import { useAppStore } from '../../store/appStore';
+import { standaloneLinkSx } from '../../theme/tokens';
 import { hasCompletedIntake, isFuturePhase, stageLinks } from '../work/summaries';
 import { ChoicePicker } from './ChoicePicker';
 import { ReferenceUpload } from './ReferenceUpload';
@@ -48,7 +49,7 @@ export function IntakePage() {
         <PageHeading title="Intake" />
         <ErrorState title="We couldn’t find that request" description="It may have been deleted, or the address is wrong." />
         <Box sx={{ mt: 2 }}>
-          <Link component={RouterLink} to="/work/drafts">
+          <Link component={RouterLink} to="/work/drafts" sx={standaloneLinkSx}>
             Back to BOM Work
           </Link>
         </Box>
@@ -294,7 +295,7 @@ function IntakeForm({ request }: { request: BomRequest }) {
           <Button variant="outlined" color="secondary" startIcon={<SaveOutlinedIcon />} onClick={save}>
             Save Draft
           </Button>
-          <Link component={RouterLink} to="/work/drafts">
+          <Link component={RouterLink} to="/work/drafts" sx={standaloneLinkSx}>
             Back to BOM Work
           </Link>
         </Stack>

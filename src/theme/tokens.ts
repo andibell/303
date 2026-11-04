@@ -59,10 +59,12 @@ export const success = {
  */
 const muiDefaults = createTheme().palette;
 export const provisionalSemantic = {
+  // The MUI default red (#d32f2f) is 4.31:1 on the page background, below the 4.5:1 AA minimum for normal text.
+  // This red is 4.87:1 on the page background and 5.62:1 on white.
   error: {
     light: muiDefaults.error.light,
-    main: muiDefaults.error.main,
-    dark: muiDefaults.error.dark,
+    main: '#C62828',
+    dark: '#B71C1C',
     contrastText: muiDefaults.error.contrastText,
   },
   warning: {
@@ -115,4 +117,20 @@ export const sizing = {
   headerHeight: 56,
   contentMaxWidth: 1600,
   tableCellPadding: '8px 12px',
+} as const;
+
+/**
+ * Touch-sized controls. On narrow screens and coarse pointers (a finger) interactive controls reach about 44px;
+ * a wide, mouse-driven layout keeps its density. `query` matches the app's narrow breakpoint (MUI `md`).
+ */
+export const touch = {
+  minTarget: 44,
+  query: '@media (max-width: 899.95px), (pointer: coarse)',
+} as const;
+
+/** A link that stands on its own line (not inside a sentence), so it can have a touch-sized hit area. */
+export const standaloneLinkSx = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  [touch.query]: { minHeight: touch.minTarget },
 } as const;

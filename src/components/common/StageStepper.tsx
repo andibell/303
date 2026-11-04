@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import CheckIcon from '@mui/icons-material/Check';
 import { Link as RouterLink } from 'react-router-dom';
+import { touch } from '../../theme/tokens';
 
 export type Stage = 'intake' | 'setup' | 'review';
 const STAGES: { id: Stage; label: string }[] = [
@@ -63,7 +64,7 @@ export function StageStepper({ active, links = {} }: StageStepperProps) {
               sx={{ display: 'flex', alignItems: 'center', flex: index < STAGES.length - 1 ? 1 : 'none', minWidth: 0 }}
             >
               {href ? (
-                <Link component={RouterLink} to={href} underline="hover" sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, position: 'relative', color: 'text.primary' }}>
+                <Link component={RouterLink} to={href} underline="hover" sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, position: 'relative', color: 'text.primary', [touch.query]: { minHeight: touch.minTarget } }}>
                   {content}
                 </Link>
               ) : (

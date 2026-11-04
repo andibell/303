@@ -13,6 +13,7 @@ import { itemBusinessName, itemTechnicalLabel } from '../../domain/items/itemNam
 import { addItemBlocker } from '../../domain/requests';
 import { RECOMMENDED_ITEM_TYPES } from '../../domain/template';
 import type { BomRequest, ItemType, RequestItem } from '../../domain/types';
+import { touch } from '../../theme/tokens';
 import { COMPLETENESS_CHIPS } from '../work/summaries';
 import { itemCardId, itemProgressText, ITEM_ORDER, orderedItems } from './setupSummaries';
 
@@ -107,7 +108,18 @@ export function ItemNavigator({ request, selectedId, onSelect, onRemove, onAdd, 
                   color="secondary"
                   onClick={() => onRemove(item)}
                   aria-label={`Remove ${technical}`}
-                  sx={{ position: 'absolute', right: 8, bottom: 6, minHeight: 24, minWidth: 0, px: 1, py: 0, fontWeight: 400 }}
+                  sx={{
+                    position: 'absolute',
+                    right: 8,
+                    bottom: 6,
+                    minHeight: 24,
+                    minWidth: 0,
+                    px: 1,
+                    py: 0,
+                    fontWeight: 400,
+                    // The label stays compact so the card isn't taller; an invisible hit area brings the touch target to 44px.
+                    [touch.query]: { minHeight: 24, '&::after': { content: '""', position: 'absolute', top: -10, bottom: -10, left: -6, right: -6 } },
+                  }}
                 >
                   Remove
                 </Button>

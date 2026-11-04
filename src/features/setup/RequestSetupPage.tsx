@@ -26,6 +26,7 @@ import type { BomRequest, ItemType, RequestItem } from '../../domain/types';
 import { isReadyForReview } from '../../domain/validation/engine';
 import { useAppStore } from '../../store/appStore';
 import { contextForRole } from '../../store/context';
+import { standaloneLinkSx } from '../../theme/tokens';
 import { businessNeedText, COMPLETENESS_CHIPS, hasCompletedIntake, requestStatusChip, scenarioText, stageLinks } from '../work/summaries';
 import { ItemNavigator } from './ItemNavigator';
 import { ItemWorkspace, WORKSPACE_HEADING_ID } from './ItemWorkspace';
@@ -43,7 +44,7 @@ export function RequestSetupPage() {
         <PageHeading title="Request Setup" />
         <ErrorState title="We couldn’t find that request" description="It may have been deleted, or the address is wrong." />
         <Box sx={{ mt: 2 }}>
-          <Link component={RouterLink} to="/work/drafts">
+          <Link component={RouterLink} to="/work/drafts" sx={standaloneLinkSx}>
             Back to BOM Work
           </Link>
         </Box>
@@ -181,7 +182,7 @@ function SetupWorkspace({ request, selected }: { request: BomRequest; selected: 
           </Stack>
         }
         actions={
-          <Link component={RouterLink} to="/work/drafts">
+          <Link component={RouterLink} to="/work/drafts" sx={standaloneLinkSx}>
             Back to BOM Work
           </Link>
         }

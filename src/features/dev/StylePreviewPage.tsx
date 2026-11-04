@@ -91,7 +91,7 @@ const SWATCH_GROUPS: { name: string; note: string; values: Record<string, string
   { name: 'Brand (sampled + derived)', note: 'Brand and primary action only; not the error color', values: tokens.brand },
   { name: 'Info (sampled light, derived main/dark)', note: 'Provisional', values: tokens.info },
   { name: 'Success (sampled light, derived main/dark)', note: 'Provisional', values: tokens.success },
-  { name: 'Error (MUI default placeholder)', note: 'Provisional; no approved color supplied', values: tokens.provisionalSemantic.error },
+  { name: 'Error (darkened for 4.5:1 text contrast)', note: 'Provisional; no approved color supplied', values: tokens.provisionalSemantic.error },
   { name: 'Warning (MUI default placeholder)', note: 'Provisional; no approved color supplied', values: tokens.provisionalSemantic.warning },
 ];
 

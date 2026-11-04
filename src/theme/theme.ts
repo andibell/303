@@ -11,6 +11,7 @@ import {
   success,
   surface,
   text,
+  touch,
   typography,
 } from './tokens';
 
@@ -85,19 +86,40 @@ export const theme = createTheme({
           minHeight: sizing.controlHeight.default,
           borderRadius: sizing.radius.control,
           paddingInline: 16,
+          [touch.query]: { minHeight: touch.minTarget },
         },
-        sizeSmall: { minHeight: sizing.controlHeight.compact, paddingInline: 12 },
+        sizeSmall: {
+          minHeight: sizing.controlHeight.compact,
+          paddingInline: 12,
+          [touch.query]: { minHeight: touch.minTarget },
+        },
       },
       variants: [
         // Secondary action: a solid outline, so the border meets 3:1 non-text contrast.
         { props: { variant: 'outlined', color: 'secondary' }, style: { borderColor: blueGrey[600] } },
       ],
     },
-    MuiIconButton: { styleOverrides: { root: { borderRadius: sizing.radius.control } } },
+    MuiIconButton: {
+      styleOverrides: {
+        root: { borderRadius: sizing.radius.control, [touch.query]: { minWidth: touch.minTarget, minHeight: touch.minTarget } },
+      },
+    },
+    // A radio or checkbox row is the target: the whole label is clickable, so the row reaches 44px.
+    MuiFormControlLabel: { styleOverrides: { root: { [touch.query]: { minHeight: touch.minTarget } } } },
     MuiTextField: { defaultProps: { size: 'small', variant: 'outlined' } },
     MuiFormControl: { defaultProps: { size: 'small' } },
     MuiSelect: { defaultProps: { size: 'small' } },
-    MuiAutocomplete: { defaultProps: { size: 'small' } },
+    MuiAutocomplete: {
+      defaultProps: { size: 'small' },
+      styleOverrides: {
+        // The typing area fills the 44px field, so tapping anywhere in it focuses the input.
+        root: {
+          [touch.query]: {
+            '& .MuiOutlinedInput-root.MuiInputBase-sizeSmall': { paddingBlock: 0, '& .MuiAutocomplete-input': { paddingBlock: '12px' } },
+          },
+        },
+      },
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
@@ -114,6 +136,7 @@ export const theme = createTheme({
           '&.Mui-error .MuiOutlinedInput-notchedOutline': { borderColor: provisionalSemantic.error.main },
           '&.Mui-disabled': { backgroundColor: neutral[100] },
           '&.Mui-disabled .MuiOutlinedInput-notchedOutline': { borderColor: border.divider },
+          [touch.query]: { minHeight: touch.minTarget, '& .MuiOutlinedInput-input:not(.MuiAutocomplete-input)': { paddingBlock: '12px' } },
         },
       },
     },

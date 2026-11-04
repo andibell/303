@@ -36,11 +36,13 @@ export function AppNav() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: { xs: 1, sm: 2 },
+          // If the navigation and New Request don't fit on one line, the button wraps rather than overlapping.
+          flexWrap: 'wrap',
+          gap: { xs: 0.5, sm: 2 },
           minHeight: 48,
         }}
       >
-        <Box component="nav" aria-label="Application" sx={{ display: 'flex', gap: { xs: 1, sm: 3 }, alignSelf: 'stretch', minWidth: 0 }}>
+        <Box component="nav" aria-label="Application" sx={{ display: 'flex', gap: { xs: 0.75, sm: 3 }, alignSelf: 'stretch', minWidth: 0 }}>
           {AREAS.map((area) => {
             const current = area.matches.test(pathname);
             return (
@@ -53,7 +55,7 @@ export function AppNav() {
                 sx={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: 0.75,
+                  gap: { xs: 0.5, sm: 0.75 },
                   px: 0.25,
                   whiteSpace: 'nowrap',
                   fontSize: '0.9375rem',
@@ -66,7 +68,7 @@ export function AppNav() {
               >
                 {area.label}
                 {area.planned && (
-                  <Typography component="span" variant="caption" sx={{ border: 1, borderColor: 'divider', borderRadius: 1, px: 0.5, color: 'text.secondary', fontWeight: 400 }}>
+                  <Typography component="span" variant="caption" sx={{ border: 1, borderColor: 'divider', borderRadius: 1, px: { xs: 0.375, sm: 0.5 }, fontSize: { xs: '0.6875rem', sm: '0.75rem' }, color: 'text.secondary', fontWeight: 400 }}>
                     Planned
                   </Typography>
                 )}
@@ -75,7 +77,13 @@ export function AppNav() {
           })}
         </Box>
         {config.canCreateRequest && (
-          <Button variant="contained" startIcon={<AddIcon />} component={RouterLink} to="/requests/new" sx={{ my: 0.75, flexShrink: 0 }}>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            component={RouterLink}
+            to="/requests/new"
+            sx={{ my: 0.75, flexShrink: 0, px: { xs: 1.25, sm: 2 }, '& .MuiButton-startIcon': { mr: { xs: 0.5, sm: 1 } } }}
+          >
             New Request
           </Button>
         )}
