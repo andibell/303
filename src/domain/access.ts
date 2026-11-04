@@ -59,7 +59,7 @@ export const ROLES: Record<RoleId, RoleConfig> = {
 /** Routes that author or edit a request. Only Requestors may open them. */
 const REQUESTOR_ONLY_PATHS: readonly RegExp[] = [
   /^\/requests\/new$/,
-  /^\/requests\/[^/]+\/(intake|setup|review)(\/.*)?$/,
+  /^\/requests\/[^/]+\/(intake|setup|review|submitted)(\/.*)?$/,
 ];
 
 export type AccessDecision = { allowed: true } | { allowed: false; reason: string };

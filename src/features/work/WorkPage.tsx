@@ -123,7 +123,7 @@ export function WorkPage() {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
         <Alert severity="success" variant="filled" onClose={() => setDismissedKey(location.key)}>
-          {submitted && `${submitted.name} submitted. Status: ${STATUS_LABELS[getRequestStatus(submitted)]}.`}
+          {submitted && `${submitted.name} (${submitted.id}) is listed in Requests. Status: ${STATUS_LABELS[getRequestStatus(submitted)]}.`}
         </Alert>
       </Snackbar>
     </>

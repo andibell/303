@@ -134,22 +134,40 @@ describe('submitting', () => {
     const id = goldenDraft();
     const user = openReview(id);
     await user.click(screen.getByRole('button', { name: 'Submit' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Validation found issues that must be fixed before submitting.');
     expect(pathname()).toBe(`/requests/${id}/review`);
     expect(req(id).submittedAt).toBeUndefined();
     expect(getRequestStatus(req(id))).toBe('draft');
-    expect(screen.getByRole('alert')).toHaveTextContent('Validation found issues that must be fixed before submitting.');
     expect(document.activeElement).toHaveTextContent('Unable to submit');
+    // Submit is available again once the attempt has finished.
+    expect(screen.getByRole('button', { name: 'Submit' })).toBeEnabled();
   });
 
-  it('submits a ready request through the store and confirms it in BOM Work', async () => {
+  it('submits a ready request through the store, keeps its items and opens the confirmation', async () => {
     const id = readyDraft();
+    const items = req(id).items.map((item) => item.id);
     const user = openReview(id);
     await user.click(screen.getByRole('button', { name: 'Submit' }));
+    expect(await screen.findByRole('heading', { level: 1, name: 'Request submitted' })).toBeInTheDocument();
+    expect(pathname()).toBe(`/requests/${id}/submitted`);
     expect(getRequestStatus(req(id))).toBe('readyForExecution');
-    expect(req(id).history.some((event) => event.type === 'requestSubmitted')).toBe(true);
-    expect(pathname()).toBe('/work/requests');
-    expect(await screen.findByText('Test product submitted. Status: Ready for Execution.')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Test product' })).toBeInTheDocument();
+    expect(req(id).submittedAt).toBeDefined();
+    expect(req(id).items.map((item) => item.id)).toEqual(items);
+    expect(req(id).history.filter((event) => event.type === 'requestSubmitted')).toHaveLength(1);
+  });
+
+  it('shows an in-progress state and ignores a second tap', async () => {
+    const id = readyDraft();
+    renderApp(`/requests/${id}/review`);
+    const button = screen.getByRole('button', { name: 'Submit' });
+    act(() => {
+      button.click();
+      button.click();
+    });
+    expect(screen.getByRole('button', { name: 'Submitting…' })).toBeDisabled();
+    await screen.findByRole('heading', { level: 1, name: 'Request submitted' });
+    expect(req(id).history.filter((event) => event.type === 'requestSubmitted')).toHaveLength(1);
+    expect(req(id).submissions).toHaveLength(1);
   });
 
   it('offers Back to Request Setup and Edit Request Details instead of editing in Review', async () => {

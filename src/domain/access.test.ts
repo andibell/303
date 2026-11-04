@@ -2,13 +2,13 @@ import { checkAccess } from './access';
 
 describe('checkAccess', () => {
   it('lets a Requestor open every lifecycle and authoring route', () => {
-    for (const path of ['/work/drafts', '/work/requests', '/work/completed', '/requests/new', '/requests/r1/intake', '/requests/r1/setup/i2', '/requests/r1/review']) {
+    for (const path of ['/work/drafts', '/work/requests', '/work/completed', '/requests/new', '/requests/r1/intake', '/requests/r1/setup/i2', '/requests/r1/review', '/requests/r1/submitted']) {
       expect(checkAccess('requestor', path)).toEqual({ allowed: true });
     }
   });
 
   it('blocks Drafts and authoring routes for an Execution Specialist', () => {
-    for (const path of ['/work/drafts', '/requests/new', '/requests/r1/intake', '/requests/r1/setup', '/requests/r1/setup/i2', '/requests/r1/review/']) {
+    for (const path of ['/work/drafts', '/requests/new', '/requests/r1/intake', '/requests/r1/setup', '/requests/r1/setup/i2', '/requests/r1/review/', '/requests/r1/submitted']) {
       expect(checkAccess('executionSpecialist', path).allowed).toBe(false);
     }
   });

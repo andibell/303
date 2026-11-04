@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -19,7 +19,6 @@ import { StageStepper } from '../../components/common/StageStepper';
 import { StatusChip } from '../../components/common/StatusChip';
 import { SourceNote } from '../../components/provenance/SourceNote';
 import { REFERENCE_DATA_PHRASE } from '../../components/provenance/provenance';
-import { withSubmitted } from '../../components/shell/routeNotice';
 import { isFunctionalPath } from '../../domain/businessNeeds';
 import { textOf } from '../../domain/items/accessors';
 import { previewSubmission } from '../../domain/requests';
@@ -91,16 +90,30 @@ function ReviewContent({ request, onSubmitted }: { request: BomRequest; onSubmit
     if (focusAt) document.getElementById(VALIDATION_HEADING_ID)?.focus();
   }, [focusAt]);
 
+  // A ref, not state, so a second tap in the same frame is ignored before React re-renders.
+  const submitting = useRef(false);
+  const [busy, setBusy] = useState(false);
+  const timer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
   const submit = () => {
+    if (submitting.current) return;
+    submitting.current = true;
+    setBusy(true);
     setProblem(null);
-    const result = submitRequest(id);
-    if (result.ok) {
-      onSubmitted();
-      navigate('/work/requests', withSubmitted(id));
-      return;
-    }
-    setProblem(result.error);
-    setFocusAt(Date.now());
+    // Yields one tick so the in-progress state renders before the local submission runs.
+    timer.current = window.setTimeout(() => {
+      const result = submitRequest(id);
+      if (result.ok) {
+        onSubmitted();
+        navigate(`/requests/${id}/submitted`, { replace: true });
+        return;
+      }
+      submitting.current = false;
+      setBusy(false);
+      setProblem(result.error);
+      setFocusAt(Date.now());
+    }, 0);
   };
 
   return (
@@ -284,15 +297,15 @@ function ReviewContent({ request, onSubmitted }: { request: BomRequest; onSubmit
             {ready ? 'Ready to submit' : `Unable to submit${blockingCount > 0 ? ` · ${blockingCount} to resolve` : ''}`}
           </Typography>
           <Typography variant="caption" color="text.secondary" sx={{ display: { xs: 'none', sm: 'block' } }}>
-            Submitting sends this request for execution. It can’t be edited afterwards.
+            Submitting moves this request from Drafts to Requests in BOM Work. It can’t be edited afterwards.
           </Typography>
         </Box>
         <Stack direction="row" spacing={1.5} useFlexGap sx={{ alignItems: 'center', flexWrap: 'wrap' }}>
           <Button variant="outlined" color="secondary" component={RouterLink} to={setupPath}>
             Back to Request Setup
           </Button>
-          <Button variant="contained" onClick={submit}>
-            Submit
+          <Button variant="contained" onClick={submit} disabled={busy} aria-busy={busy}>
+            {busy ? 'Submitting…' : 'Submit'}
           </Button>
         </Stack>
       </Box>

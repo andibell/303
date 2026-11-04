@@ -6,6 +6,7 @@ import { IntakePage } from '../features/intake/IntakePage';
 import { NewRequestPage } from '../features/intake/NewRequestPage';
 import { RequestSetupPage } from '../features/setup/RequestSetupPage';
 import { ReportsPage } from '../features/reports/ReportsPage';
+import { ConfirmationPage } from '../features/review/ConfirmationPage';
 import { ReviewPage } from '../features/review/ReviewPage';
 import { WorkPage } from '../features/work/WorkPage';
 import { PlaceholderPage } from '../features/placeholders/PlaceholderPage';
@@ -33,6 +34,7 @@ export function AppRoutes() {
         <Route path="requests/:id/intake" element={<IntakePage />} />
         <Route path="requests/:id/setup/:itemId?" element={<RequestSetupPage />} />
         <Route path="requests/:id/review" element={<ReviewPage />} />
+        <Route path="requests/:id/submitted" element={<ConfirmationPage />} />
         <Route
           path="requests/:id"
           element={
