@@ -376,6 +376,18 @@ const failedReview = (outcome: ReviewOutcome, hasItems: boolean): OpResult => ({
   request: outcome.request,
 });
 
+export interface SubmissionPreview {
+  submittable: boolean;
+  /** Every issue the submission review finds, blocking and not. */
+  issues: ValidationIssue[];
+}
+
+/** What `submitRequest` would find, without changing the request or recording anything. */
+export function previewSubmission(request: BomRequest, ctx: DomainContext): SubmissionPreview {
+  const outcome = runSubmissionReview(request, ctx);
+  return { submittable: outcome.passed, issues: outcome.request.validation.issues };
+}
+
 export function submitRequest(request: BomRequest, ctx: DomainContext): OpResult {
   if (isSubmitted(request)) return fail('This request has already been submitted.');
   const outcome = runSubmissionReview(request, ctx);

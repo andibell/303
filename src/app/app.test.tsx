@@ -169,7 +169,6 @@ describe('screens outside the current review scope', () => {
 
   it.each([
     ['/requests/BR-2026-0148', 'BOM Request'],
-    ['/requests/BR-2026-0148/review', 'Review & Submit'],
     ['/requests/BR-2026-0148/package', 'Execution package'],
     ['/requests/BR-2026-0148/items/item_1', 'Request Item'],
   ])('%s says so in restrained terms, without sounding broken', (path, title) => {
@@ -182,11 +181,10 @@ describe('screens outside the current review scope', () => {
     expect(within(main).getByRole('link', { name: 'Back to BOM Work' })).toBeInTheDocument();
   });
 
-  it('lets a Requestor go back to Request Setup from Review & Submit', async () => {
-    const user = userEvent.setup();
-    renderApp('/requests/BR-2026-0151/review');
-    await user.click(screen.getByRole('link', { name: 'Back to Request Setup' }));
-    expect(pathname()).toBe('/requests/BR-2026-0151/setup');
+  it('sends a submitted request’s Review & Submit address to its record, on the same notice', () => {
+    renderApp('/requests/BR-2026-0148/review');
+    expect(pathname()).toBe('/requests/BR-2026-0148');
+    expect(screen.getByRole('main')).toHaveTextContent(SCOPE);
   });
 
   it('opens a submitted request from the Requests list on the same notice', async () => {

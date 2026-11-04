@@ -6,6 +6,7 @@ import { IntakePage } from '../features/intake/IntakePage';
 import { NewRequestPage } from '../features/intake/NewRequestPage';
 import { RequestSetupPage } from '../features/setup/RequestSetupPage';
 import { ReportsPage } from '../features/reports/ReportsPage';
+import { ReviewPage } from '../features/review/ReviewPage';
 import { WorkPage } from '../features/work/WorkPage';
 import { PlaceholderPage } from '../features/placeholders/PlaceholderPage';
 import { ROLES } from '../domain/access';
@@ -31,16 +32,7 @@ export function AppRoutes() {
         <Route path="requests/new" element={<NewRequestPage />} />
         <Route path="requests/:id/intake" element={<IntakePage />} />
         <Route path="requests/:id/setup/:itemId?" element={<RequestSetupPage />} />
-        <Route
-          path="requests/:id/review"
-          element={
-            <PlaceholderPage
-              title="Review & Submit"
-              description="In the full product, this is where the whole request is reviewed, validated and submitted."
-              backToSetup
-            />
-          }
-        />
+        <Route path="requests/:id/review" element={<ReviewPage />} />
         <Route
           path="requests/:id"
           element={

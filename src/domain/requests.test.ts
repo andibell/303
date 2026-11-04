@@ -3,6 +3,7 @@ import {
   addItem,
   addItemBlocker,
   previewRemoval,
+  previewSubmission,
   addUpload,
   removeUpload,
   addReturn,
@@ -231,6 +232,24 @@ describe('Request Item add and removal previews', () => {
     expect(refused.ok).toBe(false);
     if (!refused.ok) expect(refused.error).toBe(addItemBlocker(withoutCreate, 'extend'));
     expect(addItemBlocker(submitted().request, 'finishedGoodsCreate')).toBe('Request Items can only be added to a draft.');
+  });
+});
+
+describe('submission preview', () => {
+  it('reports what submission would find, without changing or recording anything', () => {
+    const { request, ctx } = templateDraft();
+    deepFreeze(request);
+    const preview = previewSubmission(request, ctx());
+    const result = submitRequest(request, ctx());
+    expect(preview.submittable).toBe(false);
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(preview.issues.filter((issue) => issue.blocking).map((issue) => issue.id)).toEqual(result.issues?.map((issue) => issue.id));
+  });
+
+  it('is submittable for a valid draft', () => {
+    const { request, ctx } = validDraft();
+    expect(previewSubmission(request, ctx()).submittable).toBe(true);
   });
 });
 

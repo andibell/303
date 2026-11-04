@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
+import Snackbar from '@mui/material/Snackbar';
 import Stack from '@mui/material/Stack';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -11,11 +13,13 @@ import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import SearchIcon from '@mui/icons-material/Search';
-import { Link as RouterLink, Navigate, useParams } from 'react-router-dom';
+import { Link as RouterLink, Navigate, useLocation, useParams } from 'react-router-dom';
 import { useShallow } from 'zustand/react/shallow';
 import type { ReactNode } from 'react';
 import { EmptyState } from '../../components/common/EmptyState';
 import { PageHeading } from '../../components/common/PageHeading';
+import { readSubmitted } from '../../components/shell/routeNotice';
+import { getRequestStatus, STATUS_LABELS } from '../../domain/status';
 import { isLifecycleId, LIFECYCLE_LABELS, ROLES, type LifecycleId, type RoleId } from '../../domain/access';
 import { personaActor } from '../../data/personas';
 import type { BomRequest } from '../../domain/types';
@@ -69,6 +73,10 @@ export function WorkPage() {
   const validLifecycle = isLifecycleId(lifecycle) ? lifecycle : null;
   const records = useAppStore(useShallow((state) => selectRequestsByLifecycle(state, validLifecycle ?? 'requests')));
   const config = ROLES[role];
+  const location = useLocation();
+  const submittedId = readSubmitted(location.state);
+  const submitted = useAppStore((state) => (submittedId ? state.requests[submittedId] : undefined));
+  const [dismissedKey, setDismissedKey] = useState<string | null>(null);
 
   useEffect(() => {
     if (validLifecycle) setLastLifecycle(validLifecycle);
@@ -108,6 +116,16 @@ export function WorkPage() {
           empty={empty}
         />
       </Box>
+      <Snackbar
+        open={Boolean(submitted?.submittedAt) && dismissedKey !== location.key}
+        autoHideDuration={6000}
+        onClose={() => setDismissedKey(location.key)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      >
+        <Alert severity="success" variant="filled" onClose={() => setDismissedKey(location.key)}>
+          {submitted && `${submitted.name} submitted. Status: ${STATUS_LABELS[getRequestStatus(submitted)]}.`}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

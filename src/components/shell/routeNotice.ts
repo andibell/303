@@ -8,6 +8,14 @@ export interface RouteNotice {
 
 export const withNotice = (notice: RouteNotice) => ({ state: { notice } });
 
+/** Names the request just submitted, so BOM Work can confirm it once, for this navigation only. */
+export const withSubmitted = (requestId: string) => ({ state: { submitted: requestId } });
+
+export function readSubmitted(state: unknown): string | null {
+  const submitted = (state as { submitted?: unknown } | null)?.submitted;
+  return typeof submitted === 'string' ? submitted : null;
+}
+
 export function readNotice(state: unknown): RouteNotice | null {
   const notice = (state as { notice?: RouteNotice } | null)?.notice;
   return notice && typeof notice.message === 'string' ? notice : null;
