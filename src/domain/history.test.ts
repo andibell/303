@@ -47,7 +47,7 @@ describe('return reason taxonomy', () => {
       'Conflicting data',
       'Unsupported request combination',
       'Business approval needed',
-      'execution process constraint',
+      'Execution constraint',
       'Other',
     ]);
   });

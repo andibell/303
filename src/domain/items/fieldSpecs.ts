@@ -56,8 +56,8 @@ export interface ItemDef {
   /** The execution team records a system identifier before an item can complete. */
   requiresExecutionIdentifier: boolean;
   /**
-   * What the recorded System identifier means for this item type, when the POC has an interpretation. The identifier
-   * itself stays generic, so other item types can record different System identifiers later.
+   * What the recorded execution identifier means for this item type, when the POC has an interpretation. The identifier
+   * itself stays generic, so other item types can record different execution identifiers later.
    */
   executionIdentifierLabel?: string;
   groups: Partial<Record<GroupId, FieldSpec[]>>;
@@ -250,7 +250,7 @@ const extendRow: FieldSpec[] = [
   },
   {
     id: 'plantToExtend',
-    label: 'Plant to Extend',
+    label: 'Target facilities',
     section: 'Plants',
     input: 'plantList',
     requirement: 'expected',
@@ -261,7 +261,7 @@ const extendRow: FieldSpec[] = [
   },
   {
     id: 'producingPlants',
-    label: 'Producing Plants',
+    label: 'Producing facilities',
     section: 'Plants',
     input: 'plantList',
     requirement: 'expected',
@@ -272,7 +272,7 @@ const extendRow: FieldSpec[] = [
   },
   {
     id: 'distributingPlants',
-    label: 'Distributing Plants',
+    label: 'Distribution facilities',
     section: 'Plants',
     input: 'plantList',
     requirement: 'expected',
@@ -283,7 +283,7 @@ const extendRow: FieldSpec[] = [
   },
   {
     id: 'sendingPlants',
-    label: 'Sending Plants',
+    label: 'Supplying facilities',
     section: 'Plants',
     input: 'plantList',
     requirement: 'expected',
@@ -308,7 +308,7 @@ const extendRow: FieldSpec[] = [
   },
   {
     id: 'purchasingGrp',
-    label: 'Purchasing Grp',
+    label: 'Purchasing group',
     section: 'Plants',
     input: 'text',
     requirement: 'expected',
@@ -337,7 +337,7 @@ const bomHeader: FieldSpec[] = [
   },
   {
     id: 'p40Fert',
-    label: 'Finished Product Group',
+    label: 'Finished product',
     section: 'BOM header',
     input: 'materialRef',
     requirement: 'expected',
@@ -349,7 +349,7 @@ const bomHeader: FieldSpec[] = [
   },
   {
     id: 'headerDescription',
-    label: 'Header Description',
+    label: 'Product description',
     section: 'BOM header',
     input: 'text',
     requirement: 'expected',
@@ -359,7 +359,7 @@ const bomHeader: FieldSpec[] = [
   },
   {
     id: 'headerMatlGrp',
-    label: 'Header Matl Grp',
+    label: 'Product material group',
     section: 'BOM header',
     input: 'text',
     requirement: 'expected',
@@ -370,7 +370,7 @@ const bomHeader: FieldSpec[] = [
   },
   {
     id: 'headerMatlType',
-    label: 'Header Matl Type',
+    label: 'Product material type',
     section: 'BOM header',
     input: 'choice',
     requirement: 'expected',
@@ -382,7 +382,7 @@ const bomHeader: FieldSpec[] = [
   },
   {
     id: 'headerBaseUom',
-    label: 'Header Base UoM',
+    label: 'Product base unit',
     section: 'BOM header',
     input: 'unit',
     requirement: 'expected',
@@ -394,7 +394,7 @@ const bomHeader: FieldSpec[] = [
   },
   {
     id: 'headerQuantity',
-    label: 'Header Quantity',
+    label: 'Product quantity',
     section: 'BOM header',
     input: 'text',
     requirement: 'expected',
@@ -408,7 +408,7 @@ const bomHeader: FieldSpec[] = [
 const bomComponent: FieldSpec[] = [
   {
     id: 'componentNumber',
-    label: 'Component Number',
+    label: 'Component material',
     section: 'Components',
     input: 'materialRef',
     requirement: 'expected',
@@ -420,7 +420,7 @@ const bomComponent: FieldSpec[] = [
   },
   {
     id: 'componentDescription',
-    label: 'Component Description',
+    label: 'Component description',
     section: 'Components',
     input: 'text',
     requirement: 'expected',
@@ -431,7 +431,7 @@ const bomComponent: FieldSpec[] = [
   },
   {
     id: 'componentMatlType',
-    label: 'Component Matl Type',
+    label: 'Component material type',
     section: 'Components',
     input: 'choice',
     requirement: 'expected',
@@ -443,7 +443,7 @@ const bomComponent: FieldSpec[] = [
   },
   {
     id: 'componentMatlGrp',
-    label: 'Component Matl Grp',
+    label: 'Component material group',
     section: 'Components',
     input: 'text',
     requirement: 'expected',
@@ -454,7 +454,7 @@ const bomComponent: FieldSpec[] = [
   },
   {
     id: 'componentQty',
-    label: 'Component Qty',
+    label: 'Component quantity',
     section: 'Components',
     input: 'text',
     requirement: 'expected',
@@ -469,7 +469,7 @@ const bomComponent: FieldSpec[] = [
   },
   {
     id: 'componentBaseUom',
-    label: 'Component Base U of M',
+    label: 'Component unit',
     section: 'Components',
     input: 'unit',
     requirement: 'expected',

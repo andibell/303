@@ -17,7 +17,7 @@ export const RETURN_REASONS: readonly ReturnReasonOption[] = [
   { id: 'conflictingData', label: 'Conflicting data', hint: 'Two pieces of information in the request disagree.' },
   { id: 'unsupportedCombination', label: 'Unsupported request combination', hint: 'The combination of items or values isn’t supported.' },
   { id: 'approvalNeeded', label: 'Business approval needed', hint: 'An approval is required before execution can continue.' },
-  { id: 'systemConstraint', label: 'execution process constraint', hint: 'System rejected or can’t accept the entry.' },
+  { id: 'systemConstraint', label: 'Execution constraint', hint: 'The execution team can’t accept the entry.' },
   { id: 'other', label: 'Other', hint: 'None of the categories fit; explain below.' },
 ];
 

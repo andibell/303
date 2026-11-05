@@ -55,7 +55,7 @@ export function AppRoutes() {
           element={
             <PlaceholderPage
               title="Execution package"
-              description="In the full product, this is the validated, execution-ready output for manual System entry."
+              description="In the full product, this is the validated, execution-ready output for the execution team."
             />
           }
         />

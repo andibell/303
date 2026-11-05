@@ -238,7 +238,7 @@ export default function StylePreviewPage() {
           <Alert severity="warning">Warning: this value was populated from an upload. Please confirm it.</Alert>
           <Alert severity="error">
             <AlertTitle>Error</AlertTitle>
-            Producing Plants includes a plant that isn’t in the reference list.
+            Producing facilities includes a facility that isn’t in the reference list.
           </Alert>
         </Stack>
       </Section>

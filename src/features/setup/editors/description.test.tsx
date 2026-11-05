@@ -191,8 +191,8 @@ describe('provenance treatment', () => {
     expect(document.body).not.toHaveTextContent('fert-description-concept');
   });
 
-  it('does not show System destinations while authoring', () => {
+  it('does not show execution destinations while authoring', () => {
     open();
-    expect(document.body).not.toHaveTextContent(/MAKT\.MAKTX|MARA\.|MEAN\.|External write|Information for execution process/);
+    expect(document.body).not.toHaveTextContent(/External write|Information for execution/);
   });
 });

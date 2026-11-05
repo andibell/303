@@ -402,6 +402,6 @@ export const RULES: readonly ValidationRule[] = [
   ...(['finishedGoodsCreate', 'extend', 'finishedGoodsBom'] as const).flatMap(generatedRules),
   ...bomComponentRules,
   ...crossItemRules,
-  pairRule('finishedGoodsBom', 'finishedGoodsBom.headerQuantity.requiresUnit', 'headerQuantity', 'headerBaseUom', 'header', 'Header Quantity', 'Header Base UoM'),
-  pairRule('finishedGoodsBom', 'finishedGoodsBom.componentQty.requiresUnit', 'componentQty', 'componentBaseUom', 'component', 'Component Qty', 'Component Base U of M'),
+  pairRule('finishedGoodsBom', 'finishedGoodsBom.headerQuantity.requiresUnit', 'headerQuantity', 'headerBaseUom', 'header', 'Product quantity', 'Product base unit'),
+  pairRule('finishedGoodsBom', 'finishedGoodsBom.componentQty.requiresUnit', 'componentQty', 'componentBaseUom', 'component', 'Component quantity', 'Component unit'),
 ];

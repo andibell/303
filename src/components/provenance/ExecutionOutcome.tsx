@@ -20,11 +20,11 @@ export function ExecutionOutcome({ id, label, value }: ExecutionOutcomeProps) {
         {label}
       </Typography>
       <Typography variant="body2" sx={{ mt: 0.75, color: value ? 'text.primary' : 'text.secondary', minHeight: 24, display: 'flex', alignItems: 'center' }}>
-        {value ?? 'Assigned during execution process'}
+        {value ?? 'Assigned during execution'}
       </Typography>
       <Typography variant="caption" component="div" sx={{ mt: 0.25 }}>
         <SourceNote kind="execution">
-          {value ? 'Recorded by the Execution Specialist after execution process.' : 'Recorded by the Execution Specialist once the material is created in System.'}
+          {value ? 'Recorded by the Execution Specialist after execution.' : 'Recorded by the Execution Specialist once the material is created.'}
         </SourceNote>
       </Typography>
     </Box>

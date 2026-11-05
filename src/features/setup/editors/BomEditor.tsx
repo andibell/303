@@ -117,8 +117,8 @@ export function BomEditor({ request, item }: BomEditorProps) {
 
   const product = [
     { id: 'p40Fert', label: 'Finished product', value: header.p40Fert },
-    { id: 'headerDescription', label: 'Description', value: header.headerDescription },
-    { id: 'headerMatlType', label: 'Material type', value: header.headerMatlType },
+    { id: 'headerDescription', label: 'Product description', value: header.headerDescription },
+    { id: 'headerMatlType', label: 'Product material type', value: header.headerMatlType },
   ];
   // The material type is derived as soon as Create Finished Product exists, so it alone doesn't make the product known.
   const hasProduct = !isBlank(header.p40Fert) || !isBlank(header.headerDescription);

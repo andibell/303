@@ -37,7 +37,7 @@ export const FINISHED_GOODS_CREATE_SECTIONS: SectionPresentation[] = [
   {
     section: 'Material',
     title: 'Material identity',
-    description: 'How the finished product is identified before and after the execution process.',
+    description: 'How the finished product is identified before and after execution.',
     executionOutcome: true,
   },
   {

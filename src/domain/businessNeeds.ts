@@ -12,7 +12,7 @@ export const BUSINESS_NEEDS: readonly BusinessNeedOption[] = [
   { id: 'lineExtension', label: 'Line Extension / New Size or Configuration', functional: false },
   { id: 'packagingGraphics', label: 'Packaging or Graphics Change', functional: false },
   { id: 'reformulation', label: 'Reformulation / Ingredient Change', functional: false },
-  { id: 'plantComan', label: 'Plant or Co-man Setup', functional: false },
+  { id: 'plantComan', label: 'Facility or Contract Manufacturer Setup', functional: false },
   { id: 'marketUom', label: 'Market or Unit-of-Measure Setup', functional: false },
 ];
 

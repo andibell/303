@@ -86,7 +86,7 @@ describe('Business Need', () => {
     const user = await startNewRequest();
     await reachGoldenPath(user);
     expect(draft().materialScenario).toBe('noNewMaterials');
-    await pickNeed(user, 'Plant or Co-man Setup');
+    await pickNeed(user, 'Facility or Contract Manufacturer Setup');
     expect(draft().materialScenario).toBeNull();
   });
 });

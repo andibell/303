@@ -73,23 +73,12 @@ function conceptFields(group: FieldGroup): ReviewField[] {
 
 const MATERIAL_TYPE_LABEL = (id: string) => REFERENCE_DATA.materialTypes.find((type) => type.id === id)?.label ?? id;
 
-/** Plain-language labels for the Product BOM's header values on Review. The field definitions are unchanged. */
-const BOM_HEADER_LABELS: Record<string, string> = {
-  p40Fert: 'Finished product',
-  headerDescription: 'Description',
-  headerMatlType: 'Material type',
-  headerMatlGrp: 'Material group',
-  headerBaseUom: 'Base unit',
-  headerQuantity: 'Quantity',
-  plant: 'Facility',
-};
-
 const plain = (id: string, label: string, text: string, fromReference = false): ReviewField => ({ id, label, text, value: fv(text), fromReference });
 
 /** The Product BOM as the finished product it builds, then one block per component material. */
 function bomGroups(item: FertBomItem): ReviewGroup[] {
   const [headerGroup, ...componentGroups] = fieldGroups(item);
-  const header = [...specFields(headerGroup).values()].flat().map((field) => ({ ...field, label: BOM_HEADER_LABELS[field.id] ?? field.label }));
+  const header = [...specFields(headerGroup).values()].flat();
   const groups: ReviewGroup[] = header.length > 0 ? [{ key: 'bom-header', title: 'Finished product', fields: header }] : [];
 
   componentGroups.forEach((group, index) => {

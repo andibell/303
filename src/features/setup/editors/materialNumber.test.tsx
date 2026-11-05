@@ -39,7 +39,7 @@ describe('Finished Product Create material identifiers', () => {
     renderApp(`/requests/${goldenDraft()}/setup`);
     const outcome = screen.getByTestId('execution-outcome');
     expect(outcome).toHaveTextContent('Execution Identifier');
-    expect(outcome).toHaveTextContent('Assigned during execution process');
+    expect(outcome).toHaveTextContent('Assigned during execution');
     expect(outcome).toHaveAttribute('data-source', 'execution');
     expect(within(outcome).queryByRole('textbox')).not.toBeInTheDocument();
     expect(outcome).not.toHaveTextContent(/required|missing/i);
@@ -72,7 +72,7 @@ describe('Finished Product Create material identifiers', () => {
 
     expect(create(id).completeness).toBe('complete');
     expect(create(id).executionIdentifier).toBeUndefined();
-    expect(screen.getByTestId('execution-outcome')).toHaveTextContent('Assigned during execution process');
+    expect(screen.getByTestId('execution-outcome')).toHaveTextContent('Assigned during execution');
     expect(create(id).data.fields.materialDescription?.value).toBe('ALPH MODEL-A SIZE-B BOX 12PK');
     expect(create(id).data.fields[SOURCE_MATERIAL_IDENTIFIER_FIELD]).toEqual({ value: 'SRC-999', provenance: 'user' });
     expect(req(id).name).toBe('Product Launch Alpha');
@@ -88,12 +88,12 @@ describe('Finished Product Create material identifiers', () => {
     );
     renderApp(`/requests/${id}/setup`);
     expect(screen.getByTestId('execution-outcome')).toHaveTextContent('4000123456');
-    expect(screen.getByTestId('execution-outcome')).toHaveTextContent('Recorded by the Execution Specialist after execution process.');
+    expect(screen.getByTestId('execution-outcome')).toHaveTextContent('Recorded by the Execution Specialist after execution.');
   });
 });
 
 describe('downstream completion', () => {
-  it('still records the resulting System identifier generically, interpreted for Finished Product Create as the Execution Identifier', () => {
+  it('still records the resulting execution identifier generically, interpreted for Finished Product Create as the Execution Identifier', () => {
     const { request, ctx } = validDraft();
     let r = must(submitRequest(request, ctx()));
     r = must(startExecution(r, ctx(EXECUTOR)));

@@ -45,7 +45,7 @@ const EMPTY_COPY: Record<RoleId, Partial<Record<LifecycleId, { title: string; de
     },
     completed: {
       title: 'No completed requests',
-      description: 'Requests whose items have all been executed appear here with their System identifiers and history.',
+      description: 'Requests whose items have all been executed appear here with their Execution Identifiers and history.',
     },
   },
   executionSpecialist: {
@@ -55,7 +55,7 @@ const EMPTY_COPY: Record<RoleId, Partial<Record<LifecycleId, { title: string; de
     },
     completed: {
       title: 'No completed work',
-      description: 'Requests completed in System appear here with their System identifiers and history.',
+      description: 'Requests the execution team has completed appear here with their Execution Identifiers and history.',
     },
   },
 };

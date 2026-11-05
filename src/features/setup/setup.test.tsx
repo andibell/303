@@ -507,7 +507,7 @@ describe('editing the Request Name', () => {
     expect(req(id).name).toBe('Summer Innovation Launch');
   });
 
-  it('changes nothing but the name: not the items, material descriptions, System identifiers or other details', async () => {
+  it('changes nothing but the name: not the items, material descriptions, Execution Identifiers or other details', async () => {
     const id = goldenDraft();
     startCreate(id);
     const user = userEvent.setup();
