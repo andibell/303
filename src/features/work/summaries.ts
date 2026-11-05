@@ -1,3 +1,4 @@
+import { REFERENCE_DATA } from '../../data/reference';
 import { businessNeedLabel, isFunctionalPath, materialScenarioLabel } from '../../domain/businessNeeds';
 import { describeEvent } from '../../domain/history';
 import { itemLabel } from '../../domain/items/fieldSpecs';
@@ -73,7 +74,7 @@ export function draftState(request: BomRequest): { label: string; tone: StatusTo
   if (request.items.length === 0) return { label: 'Intake in progress', tone: 'neutral' };
   const attention = request.items.filter((item) => item.completeness === 'hasIssues').length;
   if (attention > 0) return { label: `${attention} ${attention === 1 ? 'item needs' : 'items need'} attention`, tone: 'warning' };
-  if (isReadyForReview(request)) return { label: 'Ready to review', tone: 'success' };
+  if (isReadyForReview(request, REFERENCE_DATA)) return { label: 'Ready to review', tone: 'success' };
   return { label: 'In progress', tone: 'neutral' };
 }
 

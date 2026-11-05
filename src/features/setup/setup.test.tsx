@@ -120,7 +120,8 @@ describe('progressive validation', () => {
   it('leaves the underlying domain validation unchanged', () => {
     const id = goldenDraft();
     const { validation, items } = req(id);
-    expect(validation.blockingCount).toBe(9);
+    // Nine required Create Finished Product fields, plus the Product BOM needing at least one component material.
+    expect(validation.blockingCount).toBe(10);
     expect(validation.warningCount).toBe(19);
     expect(items.every((item) => item.completeness === 'notStarted' && item.issues.length > 0)).toBe(true);
     renderApp(`/requests/${id}/setup`);

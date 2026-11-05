@@ -1,5 +1,7 @@
+import { REFERENCE_DATA } from '../../data/reference';
 import { ITEM_DEFS } from '../../domain/items/fieldSpecs';
 import type { BomRequest, ItemType, RequestItem } from '../../domain/types';
+import { isReadyForReview } from '../../domain/validation/engine';
 
 /*
  * Presentation helpers for Request Setup. They count and word what the domain already derives (issues,
@@ -51,6 +53,8 @@ export const untouched = (request: BomRequest): boolean => request.items.every((
 
 /** "0 of 3 Request Items ready", plus how many need attention once there is something to attend to. */
 export function itemProgressText(request: BomRequest): { ready: string; attention: string | null } {
+  // Once nothing blocks submission, the request is ready as a whole; a per-item count would only contradict that.
+  if (isReadyForReview(request, REFERENCE_DATA)) return { ready: 'Ready to submit', attention: null };
   const ready = request.items.filter((item) => item.completeness === 'complete').length;
   const attention = request.items.filter((item) => item.completeness === 'hasIssues').length;
   return {

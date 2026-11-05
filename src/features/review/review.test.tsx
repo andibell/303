@@ -206,6 +206,7 @@ describe('narrow screens', () => {
   it('opens only the items that need attention', () => {
     openReview(goldenDraft());
     expect(screen.getByRole('button', { name: /details for Create Finished Product/ })).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByRole('button', { name: /details for Build Product BOM/ })).toHaveAttribute('aria-expanded', 'false');
+    // The Product BOM has no component materials yet, which also blocks submission.
+    expect(screen.getByRole('button', { name: /details for Build Product BOM/ })).toHaveAttribute('aria-expanded', 'true');
   });
 });

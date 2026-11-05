@@ -200,13 +200,14 @@ describe('screens outside the current review scope', () => {
     expect(screen.getByRole('main')).not.toHaveTextContent(SCOPE);
   });
 
-  it('uses the same wording for the Request Items whose detail is outside the review', async () => {
+  it('uses the scope wording for the one Request Item whose detail is still outside the review', async () => {
     const user = userEvent.setup();
     renderApp('/requests/BR-2026-0151/setup');
-    for (const name of [/^Set Up Plant Availability/, /^Build Product BOM/]) {
-      await user.click(within(screen.getByRole('navigation', { name: 'Request Items' })).getByRole('button', { name }));
-      expect(screen.getByRole('region', { name: /Set Up Plant Availability|Build Product BOM/ })).toHaveTextContent(SCOPE);
-    }
+    await user.click(within(screen.getByRole('navigation', { name: 'Request Items' })).getByRole('button', { name: /^Set Up Plant Availability/ }));
+    expect(screen.getByRole('region', { name: 'Set Up Plant Availability' })).toHaveTextContent(SCOPE);
+    await user.click(within(screen.getByRole('navigation', { name: 'Request Items' })).getByRole('button', { name: /^Build Product BOM/ }));
+    expect(screen.getByRole('region', { name: 'Build Product BOM' })).not.toHaveTextContent(SCOPE);
+    expect(screen.getByTestId('bom-editor')).toBeInTheDocument();
   });
 
   it('keeps the prototype and synthetic-data disclosure in the footer', () => {

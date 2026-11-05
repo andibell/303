@@ -3,7 +3,7 @@ import type { Choice } from '../referenceTypes';
 import { findMaterial, findPlant } from '../referenceTypes';
 import { brief, fieldRequirements } from '../sources';
 import { fieldGroups, isBlank, listOf, textOf, type FieldGroup } from '../items/accessors';
-import { ITEM_DEFS, type FieldSpec } from '../items/fieldSpecs';
+import { bomSetupRequested, ITEM_DEFS, type FieldSpec } from '../items/fieldSpecs';
 import type { BomRequest, ItemType, RequestItem } from '../types';
 import type { RuleFinding, ValidationRule } from './types';
 
@@ -292,6 +292,81 @@ const requestRules: ValidationRule[] = [
   },
 ];
 
+/**
+ * What a Product Bill of Materials needs from its components: at least one existing material, each with a quantity.
+ * An incomplete component is a consistency problem (a material and its quantity belong together), so once the user
+ * has started the BOM it reads as Needs attention rather than as work still to come.
+ */
+const bomComponentRules: ValidationRule[] = [
+  {
+    id: 'finishedGoodsBom.components.required',
+    description: 'A Product Bill of Materials needs at least one component material.',
+    severity: 'error',
+    category: 'consistency',
+    phase: 'authoring',
+    appliesTo: 'finishedGoodsBom',
+    source: fieldRequirements('sample field'),
+    evaluate: ({ request }) =>
+      !bomSetupRequested(request)
+        ? []
+        : itemsOf(request, 'finishedGoodsBom').flatMap((item) =>
+            item.type === 'finishedGoodsBom' && !item.data.components.some((component) => !isBlank(component.fields.componentNumber))
+              ? [{ itemId: item.id, section: 'Components', message: 'Add at least one component material.' }]
+              : [],
+          ),
+  },
+  {
+    id: 'finishedGoodsBom.componentNumber.requiredWhenQuantityEntered',
+    description: 'A component that has a quantity needs a material.',
+    severity: 'error',
+    category: 'consistency',
+    phase: 'authoring',
+    appliesTo: 'finishedGoodsBom',
+    source: fieldRequirements('sample field'),
+    evaluate: ({ request }) =>
+      !bomSetupRequested(request)
+        ? []
+        : itemsOf(request, 'finishedGoodsBom').flatMap((item) =>
+            item.type !== 'finishedGoodsBom'
+              ? []
+              : item.data.components
+                  .filter((component) => !isBlank(component.fields.componentQty) && isBlank(component.fields.componentNumber))
+                  .map((component) => ({
+                    itemId: item.id,
+                    rowId: component.id,
+                    section: 'Components',
+                    fieldId: 'componentNumber',
+                    message: 'Choose a material for this component.',
+                  })),
+          ),
+  },
+  {
+    id: 'finishedGoodsBom.componentQty.requiredWhenMaterialChosen',
+    description: 'A component material needs a quantity.',
+    severity: 'error',
+    category: 'consistency',
+    phase: 'authoring',
+    appliesTo: 'finishedGoodsBom',
+    source: fieldRequirements('sample field'),
+    evaluate: ({ request }) =>
+      !bomSetupRequested(request)
+        ? []
+        : itemsOf(request, 'finishedGoodsBom').flatMap((item) =>
+            item.type !== 'finishedGoodsBom'
+              ? []
+              : item.data.components
+                  .filter((component) => !isBlank(component.fields.componentNumber) && isBlank(component.fields.componentQty))
+                  .map((component) => ({
+                    itemId: item.id,
+                    rowId: component.id,
+                    section: 'Components',
+                    fieldId: 'componentQty',
+                    message: 'Enter a quantity for this component.',
+                  })),
+          ),
+  },
+];
+
 const crossItemRules: ValidationRule[] = [
   {
     id: 'finishedGoodsCreate.bomSetup.consistency',
@@ -325,6 +400,7 @@ const crossItemRules: ValidationRule[] = [
 export const RULES: readonly ValidationRule[] = [
   ...requestRules,
   ...(['finishedGoodsCreate', 'extend', 'finishedGoodsBom'] as const).flatMap(generatedRules),
+  ...bomComponentRules,
   ...crossItemRules,
   pairRule('finishedGoodsBom', 'finishedGoodsBom.headerQuantity.requiresUnit', 'headerQuantity', 'headerBaseUom', 'header', 'Header Quantity', 'Header Base UoM'),
   pairRule('finishedGoodsBom', 'finishedGoodsBom.componentQty.requiresUnit', 'componentQty', 'componentBaseUom', 'component', 'Component Qty', 'Component Base U of M'),

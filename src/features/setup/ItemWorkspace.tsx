@@ -7,6 +7,7 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { StatusChip } from '../../components/common/StatusChip';
 import { itemBusinessName, itemDescription, itemTechnicalLabel } from '../../domain/items/itemNames';
 import type { BomRequest, RequestItem } from '../../domain/types';
+import { BomEditor } from './editors/BomEditor';
 import { FertCreateEditor } from './editors/FertCreateEditor';
 import { OUT_OF_REVIEW_SCOPE } from '../placeholders/reviewScope';
 import { COMPLETENESS_CHIPS } from '../work/summaries';
@@ -81,11 +82,13 @@ export function ItemWorkspace({ request, item }: { request: BomRequest; item: Re
       {item.type === 'finishedGoodsCreate' ? (
         // Keyed by item so a removed and re-added Finished Product Create starts with fresh touched state.
         <FertCreateEditor key={item.id} request={request} item={item} />
+      ) : item.type === 'finishedGoodsBom' ? (
+        <BomEditor key={item.id} request={request} item={item} />
       ) : (
         <Box sx={{ mt: 3, border: 1, borderStyle: 'dashed', borderColor: 'divider', borderRadius: 1, px: 2, py: 2.5 }}>
           <Typography color="text.secondary">{OUT_OF_REVIEW_SCOPE}</Typography>
           <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
-            Create Finished Product shows the depth intended for a Request Item.
+            Create Finished Product and Build Product BOM show the depth intended for a Request Item.
           </Typography>
         </Box>
       )}

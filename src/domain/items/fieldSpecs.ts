@@ -67,7 +67,7 @@ const FINISHED_GOODS_CREATE_REQ = () => fieldRequirements('sample field');
 const FINISHED_GOODS_EXTEND_REQ = () => fieldRequirements('sample field');
 const PRODUCT_BOM_REQ = () => fieldRequirements('sample field');
 
-const bomSetupRequested = (request: BomRequest): boolean => {
+export const bomSetupRequested = (request: BomRequest): boolean => {
   const create = request.items.find((item) => item.type === 'finishedGoodsCreate');
   const answer = create?.type === 'finishedGoodsCreate' ? create.data.fields.finishedGoodsBomSetupNeeded?.value : undefined;
   return answer !== 'N';
@@ -459,6 +459,10 @@ const bomComponent: FieldSpec[] = [
     input: 'text',
     requirement: 'expected',
     ...bomApplies,
+    pattern: {
+      regex: /^(?!0+(\.0+)?$)\d{1,9}(\.\d{1,3})?$/,
+      message: 'Enter a quantity greater than zero, using digits and an optional decimal (for example 18200 or 2.5).',
+    },
  
     route: 'Execution',
     source: PRODUCT_BOM_REQ(),

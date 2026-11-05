@@ -19,6 +19,7 @@ import { PageHeading } from '../../components/common/PageHeading';
 import { SaveIndicator } from '../../components/common/SaveIndicator';
 import { StageStepper } from '../../components/common/StageStepper';
 import { StatusChip } from '../../components/common/StatusChip';
+import { REFERENCE_DATA } from '../../data/reference';
 import { isFunctionalPath } from '../../domain/businessNeeds';
 import { itemBusinessName } from '../../domain/items/itemNames';
 import { previewRemoval, type RemovalInfo } from '../../domain/requests';
@@ -146,11 +147,11 @@ function SetupWorkspace({ request, selected }: { request: BomRequest; selected: 
 
   const status = requestStatusChip(request);
   const progress = itemProgressText(request);
-  const ready = isReadyForReview(request);
+  const ready = isReadyForReview(request, REFERENCE_DATA);
   // Validation is progressive: untouched work isn't counted. Review & Submit surfaces everything.
   const counts = issueCountText(requestIssueCounts(request));
   const guidance = ready
-    ? 'Every Request Item is ready. Review the request, then submit it from Review & Submit.'
+    ? 'Nothing blocks submission. Review the request, then submit it from Review & Submit.'
     : request.items.length === 0
       ? 'Use Add New + to add a Request Item, then review the request.'
       : untouched(request)

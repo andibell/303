@@ -44,13 +44,15 @@ export function validateRequest(
  *  complete    nothing missing and nothing wrong
  */
 export function deriveCompleteness(item: RequestItem, issues: ValidationIssue[]): Completeness {
-  if (!hasUserContent(item)) return 'notStarted';
+  // An item the user has edited counts as started even if they emptied it again (updateItem moves updatedAt).
+  if (!hasUserContent(item) && item.updatedAt === item.createdAt) return 'notStarted';
   return completenessOf(issues.filter((issue) => issue.itemId === item.id));
 }
 
+/** Only blocking issues keep an item from Complete: a warning is guidance and never holds work back. */
 const completenessOf = (issues: ValidationIssue[]): Completeness => {
   if (issues.some((issue) => issue.blocking && issue.category !== 'missing')) return 'hasIssues';
-  if (issues.some((issue) => issue.category === 'missing')) return 'inProgress';
+  if (issues.some((issue) => issue.blocking && issue.category === 'missing')) return 'inProgress';
   return 'complete';
 };
 
@@ -101,6 +103,11 @@ export function evaluateRequest(
   };
 }
 
-export const isReadyForReview = (request: BomRequest): boolean =>
-  request.items.length > 0 && request.items.every((item) => item.completeness === 'complete') && request.validation.submittable;
+/**
+ * Whether the request can be submitted: it has Request Items and the full submission rules find nothing blocking.
+ * Request Setup, BOM Work and Review & Submit all use this, so they cannot disagree. An item that is untouched but
+ * blocks nothing (such as one that only has warnings) does not hold the request back.
+ */
+export const isReadyForReview = (request: BomRequest, reference: ReferenceData): boolean =>
+  request.items.length > 0 && validateRequest(request, reference, 'submission').every((issue) => !issue.blocking);
 
